@@ -1,0 +1,30 @@
+<title>Etusivu</title>
+<h1>Tervetuloa keskustelusovellukseen!</h1>
+
+{% if session.user_id %}
+Olet kirjautunut sisään.
+<a href="/logout">Kirjaudu ulos</a><br>
+
+<br>
+Keskustelualueiden määrä: {{ count }}<br>
+Luo uusi keskustelualue
+<form action="/create" method="POST">
+    Alueen nimi: <input type="text" name="name"> <br>
+    <input type="submit" value="Lähetä">
+    </form>
+
+Keskustelualueet: <br>
+{% for room in rooms %}
+<a href="{{ url_for('room_messages', room_id=room.id) }}">{{ room.name }}</a>
+
+<hr>
+{% endfor %}
+{% else %}
+<a href="/login">Kirjaudu sisään</a>
+{% endif %}
+<br>
+
+
+
+
+
