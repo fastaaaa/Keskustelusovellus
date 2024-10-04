@@ -1,0 +1,9 @@
+Hakusanaan sopivien viestien määrä: {{ count }}
+<hr>
+{% for message in messages %}
+{{ message.content }}<br>
+Viesti löytyy keskustelusta:
+<a href="/room/{{ message.room_id }}/messages">{{ message.room_name }}</a>
+<hr>
+{% endfor %}
+

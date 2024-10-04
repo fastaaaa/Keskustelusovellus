@@ -1,0 +1,16 @@
+Lisää käyttäjä ylläpitäjäksi<br>
+<form action="/admin" method="POST">
+Käyttäjätunnus: <input type="text" name="username">
+<p>
+<input type="submit" value="Lähetä">
+</form>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}

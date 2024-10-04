@@ -5,6 +5,10 @@
 Olet kirjautunut sisään.
 <a href="/logout">Kirjaudu ulos</a><br>
 
+{% if admin_user %}
+    <a href="/admin">Hallinnoi ylläpitäjiä</a><br>
+{% endif %}
+
 <br>
 Keskustelualueiden määrä: {{ count }}<br>
 Luo uusi keskustelualue
@@ -15,10 +19,17 @@ Luo uusi keskustelualue
 
 Keskustelualueet: <br>
 {% for room in rooms %}
-<a href="{{ url_for('room_messages', room_id=room.id) }}">{{ room.name }}</a>
-
+<a href="{{ url_for('room_messages', room_id=room.id) }}">{{ room.name }}</a><br>
 <hr>
 {% endfor %}
+
+Hae viestejä keskusteluista
+<form action="/search" method="GET">
+    Hakusana: <input type="text" name="query">
+    <br>
+    <input type="submit" value="Lähetä">
+    </form>
+    
 {% else %}
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}

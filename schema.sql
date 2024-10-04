@@ -13,7 +13,12 @@ CREATE TABLE messages (
 
 CREATE TABLE rooms (
     id SERIAL PRIMARY KEY,
-    name TEXT,
+    name TEXT
+);
+
+CREATE TABLE admins (
+    id SERIAL PRIMARY KEY,
+    username TEXT
 );
 
 

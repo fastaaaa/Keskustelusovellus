@@ -3,14 +3,24 @@ from flask import render_template, request, redirect
 import messages
 import users
 import rooms
-from flask import Flask, redirect, session
-
+import admins
+from flask import Flask, redirect, session, flash
+from flask_sqlalchemy import SQLAlchemy
+from db import db
+from sqlalchemy.sql import text
+from models import User, Admin
 
 @app.route("/")
 def index():
     list = rooms.room_list()
     count = len(list)
-    return render_template("index.html", count=count, rooms=list)
+    username = session.get("username")
+    admin_user = False
+    if username:
+        admin = Admin.query.filter_by(username=username).first()
+        if admin:
+            admin_user = True
+    return render_template("index.html", count=count, rooms=list, admin_user=admin_user)
 
 @app.route("/send", methods=["POST"])
 def send():
@@ -29,6 +39,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         if users.login(username, password):
+            session["username"] = username
             return redirect("/")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
@@ -73,7 +84,35 @@ def room_messages(room_id):
     count = len(messages_list)
     return render_template("messages.html", messages=messages_list, room_name=room_name, count=count, room_id=room_id)
 
+@app.route("/search")
+def search():
+    query = request.args["query"]
+    sql = text("SELECT M.id, M.content, M.room_id, R.name AS room_name FROM messages M, rooms R WHERE M.content LIKE :query AND M.room_id = R.id")
+    result = db.session.execute(sql, {"query":"%"+query+"%"})
+    messages = result.fetchall()
+    count = len(messages)
+    return render_template("search.html", messages=messages, count=count)
 
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if request.method == "POST":
+        username = request.form["username"]
+        user = User.query.filter_by(username=username).first()
+        if user:
+            admin = Admin.query.filter_by(username=username).first()
+            if not admin:
+                new = Admin(username=username)
+                db.session.add(new)
+                db.session.commit()
+                flash(f"Käyttäjä {username} lisätty ylläpitäjäksi")
+            else: 
+                flash(f"Käyttäjän {username} lisäys ylläpitäjäksi epäonnistui")
+        else:
+            flash(f"Käyttäjän {username} lisäys ylläpitäjäksi epäonnistui")
+        return redirect("/admin")
+    if request.method == "GET":
+        return render_template("admin.html")
+   
 
 
 
