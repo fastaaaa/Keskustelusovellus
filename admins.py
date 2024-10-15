@@ -8,3 +8,5 @@ def add_admin(username):
     db.session.execute(sql, {"username":username})
     db.session.commit()
     return True
+
+

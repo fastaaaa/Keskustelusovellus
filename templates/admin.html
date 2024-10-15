@@ -2,6 +2,14 @@ Lisää käyttäjä ylläpitäjäksi<br>
 <form action="/admin" method="POST">
 Käyttäjätunnus: <input type="text" name="username">
 <p>
+<input type="submit" value="Lisää">
+</form>
+
+<form action="/send_info" method="POST">
+<input type="hidden" name="username" value="{{ username }}">
+Viesti: <br>
+<textarea name="content" rows="3" cols="40"></textarea>
+<br>
 <input type="submit" value="Lähetä">
 </form>
 

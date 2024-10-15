@@ -35,7 +35,12 @@ Hae viestejä keskusteluista
 {% endif %}
 <br>
 
-
-
-
-
+Ylläpitäjien viesti: <br>
+{% for i in info %}
+<i>Viesti:</i> {{ i[0] }}
+<p>
+<i>Lähettäjä:</i> {{ i[1] }}
+<p>
+<i>Aika:</i> {{ i[2].strftime("%Y-%m-%d %H:%M:%S") }}
+<hr>
+{% endfor %}

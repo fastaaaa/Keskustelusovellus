@@ -5,4 +5,3 @@ from os import getenv
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://"
 db = SQLAlchemy(app)
 
-

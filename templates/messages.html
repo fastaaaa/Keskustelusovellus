@@ -1,14 +1,31 @@
 <h1>{{ room_name }}</h1>
 Viestien määrä: {{ count }}
+
+{% if admin_user %}
+<form action="/delete_room" method="POST">
+<input type="hidden" name="room_id" value="{{ room_id }}">
+<input type="submit" value="Poista keskustelualue">    
+</form>
+{% endif %} 
+
 <hr>
 {% for message in messages %}
 <i>Viesti:</i> {{ message[0] }}
+{% if message.user_id == session.user_id or admin_user%} 
+<form action="/delete" method="POST">
+<input type="hidden" name="id" value="{{ message[4] }}">
+<input type="hidden" name="room_id" value="{{ message[3] }}">
+<input type="hidden" name="user_id" value="{{ message[5] }}">
+<input type="submit" value="Poista">    
+</form>
+{% endif %} 
 <p>
 <i>Lähettäjä:</i> {{ message[1] }}
 <p>
 <i>Aika:</i> {{ message[2].strftime("%Y-%m-%d %H:%M:%S") }}
 <hr>
 {% endfor %}
+
 <form action="/send" method="POST">
 <input type="hidden" name="room_id" value="{{ room_id }}">
 Viesti: <br>
