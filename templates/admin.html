@@ -1,24 +1,37 @@
-Lisää käyttäjä ylläpitäjäksi<br>
-<form action="/admin" method="POST">
-Käyttäjätunnus: <input type="text" name="username">
-<p>
-<input type="submit" value="Lisää">
-</form>
-
-<form action="/send_info" method="POST">
-<input type="hidden" name="username" value="{{ username }}">
-Viesti: <br>
-<textarea name="content" rows="3" cols="40"></textarea>
+<!DOCTYPE html>
+{% extends "layout.html" %}{% block content %}
 <br>
-<input type="submit" value="Lähetä">
-</form>
-
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
+<head>
+    <title>Ylläpitäjät</title>
+</head>
+{% if user_id == session.user_id and admin_user%} 
+    <div class="container">
+        <div class="right-div">
+        <h3>Lisää käyttäjä ylläpitäjäksi</h3>
+        <br>
+        <form action="/admin" method="POST">
+        Käyttäjätunnus: <input type="text" name="username">
+        <button type="submit" class="btn btn-custom">Lisää</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+        </div>
+        <br>
+        <div class="right-div">
+        <form action="/send_info" method="POST">
+        <input type="hidden" name="username" value="{{ username }}">
+        <h3>Lähetä info viesti etusivulle</h3>
+        <textarea name="content" rows="5" cols="30"></textarea>
+        <br>
+        <button type="submit" class="btn btn-custom">Lähetä</button>
+        </form>
+        </div>
+    </div>
+{% endif %}{% endblock %}

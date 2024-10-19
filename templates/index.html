@@ -1,46 +1,50 @@
-<title>Etusivu</title>
-<h1>Tervetuloa keskustelusovellukseen!</h1>
+<!DOCTYPE html>
+{% extends "layout.html" %}{% block content %}
 
-{% if session.user_id %}
-Olet kirjautunut sisään.
-<a href="/logout">Kirjaudu ulos</a><br>
-
-{% if admin_user %}
-    <a href="/admin">Hallinnoi ylläpitäjiä</a><br>
-{% endif %}
-
+    <head>
+        <title>Etusivu</title>
+    </head>
 <br>
-Keskustelualueiden määrä: {{ count }}<br>
-Luo uusi keskustelualue
-<form action="/create" method="POST">
+<div class="container">
+  <div class="left-div">
+  <h3>Keskustelualueet</h3> 
+  <br>
+  Keskustelualueiden määrä: {{ count }}<br>
+  {% for room in rooms %}
+  <hr>
+  <a href="{{ url_for('room_messages', room_id=room.id) }}">{{ room.name }}</a><br>
+  {% endfor %}
+  <br>
+  </div>
+  <div class="center-div">
+    <div class="inner-box">
+    <h3>Luo uusi keskustelualue</h3>
+    <form action="/create" method="POST">
     Alueen nimi: <input type="text" name="name"> <br>
-    <input type="submit" value="Lähetä">
+    <button type="submit" class="btn btn-custom">Lähetä</button>
     </form>
-
-Keskustelualueet: <br>
-{% for room in rooms %}
-<a href="{{ url_for('room_messages', room_id=room.id) }}">{{ room.name }}</a><br>
-<hr>
-{% endfor %}
-
-Hae viestejä keskusteluista
-<form action="/search" method="GET">
-    Hakusana: <input type="text" name="query">
+    </div>
+    <div class="inner-box">
+    <form action="/search" method="GET">
+    <h3>Hae viestejä:</h3> 
+    <input type="text" name="query">
     <br>
-    <input type="submit" value="Lähetä">
+    <button type="submit" class="btn btn-custom">Etsi</button>
     </form>
-    
-{% else %}
-<a href="/login">Kirjaudu sisään</a>
-{% endif %}
-<br>
+    </div>
+  </div>
+  <div class="right-div">
+  <h3>Ylläpitäjien viesti</h3> 
+  <br>
+  {% for i in info %}
+  <i>Viesti:</i> {{ i[0] }}
+  <p>
+  <i>Lähettäjä:</i> {{ i[1] }}
+  <p>
+  <i>Aika:</i> {{ i[2].strftime("%Y-%m-%d %H:%M:%S") }}
+  {% endfor %}{% endblock %}
+  </div>
+</div>
 
-Ylläpitäjien viesti: <br>
-{% for i in info %}
-<i>Viesti:</i> {{ i[0] }}
-<p>
-<i>Lähettäjä:</i> {{ i[1] }}
-<p>
-<i>Aika:</i> {{ i[2].strftime("%Y-%m-%d %H:%M:%S") }}
-<hr>
-{% endfor %}
+
+    

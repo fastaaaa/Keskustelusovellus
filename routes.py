@@ -22,7 +22,12 @@ def index():
         admin = Admin.query.filter_by(username=username).first()
         if admin:
             admin_user = True
-    return render_template("index.html", count=count, rooms=list, info=hox, admin_user=admin_user)
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+         return render_template("login.html")
+    else:  
+        return render_template("index.html", count=count, rooms=list, info=hox, admin_user=admin_user)
 
 @app.route("/send", methods=["POST"])
 def send():
@@ -56,6 +61,9 @@ def register():
         password2 = request.form["password2"]
         if password1 != password2:
             return render_template("error.html", message="Salasanat eroavat")
+        other_user = User.query.filter_by(username=username).first()
+        if other_user:
+            return render_template("error.html", message="Valitsemasi käyttäjätunnus on jo käytössä")
         if users.register(username, password1):
             return redirect("/")
         else:
@@ -98,7 +106,7 @@ def room_messages(room_id):
 @app.route("/search")
 def search():
     query = request.args["query"]
-    sql = text("SELECT M.id, M.content, M.room_id, R.name AS room_name FROM messages M, rooms R WHERE M.content LIKE :query AND M.room_id = R.id")
+    sql = text("SELECT M.id, M.content, M.room_id, M.visible, R.visible, R.name AS room_name FROM messages M, rooms R WHERE M.content LIKE :query AND M.room_id = R.id AND M.visible = TRUE AND R.visible = TRUE")
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     messages = result.fetchall()
     count = len(messages)
@@ -106,6 +114,16 @@ def search():
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return render_template("error.html", message="Kirjaudu sisään nähdäksesi tämän sivun")
+    if request.method == "GET":
+        admin_user = Admin.query.filter_by(username=user.username).first()
+        if admin_user:
+            return render_template("admin.html", user_id=user_id, admin_user=admin_user, username=user.username)
+        else:
+            return render_template("error.html", message="Sinulla ei ole tarvittavia käyttöoikeuksia tälle sivulle")
     if request.method == "POST":
         username = request.form["username"]
         user = User.query.filter_by(username=username).first()
@@ -121,8 +139,6 @@ def admin():
         else:
             flash(f"Käyttäjän {username} lisäys ylläpitäjäksi epäonnistui")
         return redirect("/admin")
-    if request.method == "GET":
-        return render_template("admin.html")
     
 @app.route("/delete", methods=["POST"])
 def delete_message():

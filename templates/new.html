@@ -1,8 +1,18 @@
-<form action="/send" method="POST">
-<input type="hidden" name="room_id" value="{{ room_id }}">
-Viesti: <br>
-<textarea name="content" rows="3" cols="40"></textarea>
+<!DOCTYPE html>
+{% extends "layout.html" %}{% block content %}
+<head>
+    <title>Uusi keskustelu</title>
+</head>
 <br>
-<input type="submit" value="Lähetä">
-</form>
+<div class="container">
+    <div class="right-div">
+    <form action="/send" method="POST">
+    <input type="hidden" name="room_id" value="{{ room_id }}">
+    Aloitusviesti: <br>
+    <textarea name="content" rows="5" cols="30"></textarea>
+    <br>
+    <button type="submit" class="btn btn-custom">Lähetä</button>
+    </form>{% endblock %}
+    </div>
+</div>
 
