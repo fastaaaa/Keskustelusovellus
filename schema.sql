@@ -6,7 +6,7 @@ CREATE TABLE users (
 
 CREATE TABLE rooms (
     id SERIAL PRIMARY KEY,
-    name TEXT
+    name TEXT,
     visible BOOLEAN
 );
 

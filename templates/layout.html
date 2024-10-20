@@ -9,28 +9,29 @@
 <body>
   
 
-  <div class="layout-middle"><h1>Horoskooppi chat</h1></div>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="/">Etusivu</a>
-        </li>
-        {% if admin_user %}
-        <li class="nav-item active">
-          <a class="nav-link" href="/admin">Ylläpitäjät</a>
-          </li>{% endif %}
-        {% if session.user_id %}
-        <li class="nav-item active">
-          <a class="nav-link" href="/logout">Kirjaudu ulos</a>
-        </li>{% else %}
-        <li class="nav-item active">
-          <a class="nav-link" href="/login">Kirjaudu sisään</a>
-        </li>
-        {% endif %}
-    </ul>
-    </div>
-  </nav>
+  <div class="layout-middle"><h1>Astro chat</h1></div>
+ 
+  <nav class="navbar navbar-expand-lg navbar-light bg-light"">
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+              <a class="nav-link" href="/">Etusivu</a>
+          </li>
+          {% if admin_user %}
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin">Ylläpitäjät</a>
+            </li>{% endif %}
+          {% if session.user_id %}
+          <li class="nav-item active">
+            <a class="nav-link" href="/logout">Kirjaudu ulos</a>
+          </li>{% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="/login">Kirjaudu sisään</a>
+          </li>
+          {% endif %}
+      </ul>
+      </div>
+    </nav>
 {% block content %}
 <form>
     <div class="form-group">

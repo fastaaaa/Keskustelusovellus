@@ -3,8 +3,8 @@
 }
 
 .btn-custom {
-    background-color: #ff9457;
-    color: white;
+    background-color: #e9ae55;
+    color: black;
 }
 
 .btn-delete {
@@ -22,7 +22,7 @@
 
 .left-div {
 
-    background-color: #f0da78;
+    background-color: #ebc895;
     width: 33%;
     min-height: 300px;
     padding: 10px;
@@ -37,7 +37,7 @@
 }
 
 .inner-box {
-    background-color: #f0da78;
+    background-color: #ebc895;
     width: 100%;
     min-height: 75px;
     margin-bottom: 20px;
@@ -47,7 +47,7 @@
 
 .right-div {
 
-    background-color: #f0da78;
+    background-color: #ebc895;
     width: 33%;
     min-height: 100px;
     padding: 10px;
@@ -65,9 +65,11 @@ body {
 }
 
 a {
-    color: #e0e2ff;
+    color: #0d1b2a;
 }
 
 h1 {
-    color: #e0e2ff;
+    color: #ebdecc;
 }
+
+
